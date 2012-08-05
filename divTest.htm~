@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title> Test of the div overlay </title>
+	<style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+   	#i1
+		{
+			text-align:center;
+			background-color:white;
+			opacity: 1.0;
+			width:25%;
+			height:25%;
+		}
+		#i2
+		{
+			background-color:green;
+			opacity: 0.5;		
+			width:100%;
+			height:100%;		
+		}
+		#i3
+		{
+			background-color:blue;
+			width:100%;
+			height:100%;
+			opacity: 0.5;		
+		}
+		#i4
+		{
+			background-color:gray;
+			width:100%;
+			height:100%;
+			opacity: 0.5;		
+		}
+		#i5
+		{
+			background-color:orange;
+			width:100%;
+			height:100%;		
+		}
+		#i6
+		{
+			background-color:orchid;
+			width:100%;
+			height:100%;		
+		}
+		#i7
+		{
+			background-color:olive;
+			width:100%;
+			height:100%;		
+		}
+		#i8
+		{
+			background-color:darkcyan;
+			width:100%;
+			height:100%;		
+		}
+	 	#i9
+		{
+			background-color:pink;	
+			width:100%;
+			height:100%;		
+		}
+		
+	 	#i10
+		{
+			background-color:orange;	
+			width:100%;
+			height:100%;		
+		}
+
+	 	#i11
+		{
+			background-color:brown;	
+			width:100%;
+			height:100%;		
+		}
+
+	 	#i12
+		{
+			background-color:darkgoldenrod;	
+			width:100%;
+			height:100%;		
+		}
+
+	 	#i13
+		{
+			background-color:violet;	
+			width:100%;
+			height:100%;		
+		}
+		
+	 	#i14
+		{
+			background-color:cyan;	
+			width:100%;
+			height:100%;		
+		}
+		
+	 	#i15
+		{
+			background-color:blue;	
+			width:100%;
+			height:100%;		
+		}
+		#demo
+		{
+			background-color:lightcoral;	
+			width:100%;
+			height:100%;		
+		}
+	</style>
+	<script type="text/javascript">
+	    var x=document.getElementById("i1");
+	    var visibleDiv = 2;
+	    var animateTimeout;
+	    
+	    function animate(){
+          animateTimeout = setInterval(function(){oneStepAnimation()},1000);
+       }
+       
+       var startPosition = 1;
+       var endPosition   = 9;
+		 var pos=startPosition;	   
+		     
+       function oneStepAnimation(){
+		 	for(i=startPosition; i<=endPosition ;i++){
+		 		changeVisibility("i"+i,0.0);
+		 	}
+		 	//alert("Cleared");
+		 	var j=startPosition;
+		 	//alert("id="+pos);
+		  var text="";
+		  while(j<=pos){	 		
+		 		changeVisibility("i"+j,0.9);
+				text = text+ "j="+j +"; pos="+pos+"<br />";				
+				j++;
+				
+				//alert("Layer visibility changed again.");
+				document.getElementById("demo").innerHTML=text;		 	
+		 	}
+		 	//alert("Coloured");
+		 	
+		 	pos = pos+1;
+		 	if(pos > endPosition){
+				pos = startPosition;		 	
+		 	}
+		 	
+       }
+	    
+	    function changeAllDivVisibility(){
+			for(i=2; i<9 ;i++){
+				changeVisibility("i"+i,0.1);	 
+		   }
+	    }
+	    
+	    function changeVisibility(name, opacity){
+	    	
+			var x=document.getElementById(name);
+			x.style.opacity = opacity;	
+			//alert("Changed visibility of the element with id="+x.getAttribute("id"));
+	    }
+	    
+ 	</script> 
+</head>
+<body>
+<button onclick="changeVisibility('i2',0.1)" >Change visibility if the element</button>
+<button onclick="oneStepAnimation()" >One step animation</button>
+<button onclick="animate()" >Animate</button>
+<div id="i1"  >
+	<div id="i2" >
+		<div id="i3" >
+			<div id="i4" >
+				<div id="i5" >
+					<div id="i6">
+						<div id="i7">
+							<div id="i8">
+								<div id="i9">2 		2</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="divTest" style="width:25%; height:25%" >
+<script type="text/javascript" > 
+			var j=0;
+			var text="";
+		 	while(j<6){
+		 		text = text+"<div id=\"i"+(10+j) +"\">"+" "+10+j+ "</ div>";
+		 		j++;	
+		 	}
+		 	document.getElementById("divTest").innerHTML=text;
+		 	//alert(text);	 
+</script>
+</div>
+<div id="demo" style="width:25%; height:25%"></div>
+<script type="text/javascript" > 
+			var j=1;
+			var text="";
+		 	while(j<6){
+		 		text = text+"<button>"+" "+ j+ "</ button>";
+		 		document.getElementById("demo").innerHTML=text;	 
+		 		j++;	
+		 	}
+</script>
+</body>
+</html>

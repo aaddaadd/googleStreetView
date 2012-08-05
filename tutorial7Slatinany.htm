@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map_canvas { height: 100% }
+    </style>
+    <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBtiszutk7wJLxrl9fKNSgpE5UT3C9X4f8&sensor=false">
+    </script>
+    <script type="text/javascript">
+      var heading =89;
+      var rotateTimeout;
+      var fenway;
+      var startPoint;
+      var endPoint;
+      var myOptions;
+      var map;
+      var tempMap;
+      var panorama;
+      var tempPanorama;
+      
+      function initialize() {
+          fenway = new google.maps.LatLng(49.9155, 15.819166); 
+          startPoint = new google.maps.LatLng(49.993, 15.821166);
+          stopPoint = new google.maps.LatLng(49.993, 15.838166);
+          myOptions = {
+            center: fenway,
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          };
+          map = new google.maps.Map(document.getElementById("map_canvas"),
+              myOptions);                            
+          rotateHeading();
+          map.setStreetView(panorama);
+       }
+       function testMove() {
+          fenway = new google.maps.LatLng(49.9155, 15.819166); 
+          startPoint = new google.maps.LatLng(49.9158, 15.818);
+          stopPoint = new google.maps.LatLng(49.9158, 15.8204);
+          myOptions = {
+            center: new google.maps.LatLng(49.9155, 15.818),
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          };
+          map = new google.maps.Map(document.getElementById("map_canvas"),
+              myOptions);                            
+         
+          map.setStreetView(panorama);
+       }
+       
+       function rotateHeading(){
+        if(tempPanorama!=null){
+          panorama = tempPanorama;
+        }
+          heading = heading + 10;
+          if(heading>360){
+            heading = 0;
+          }
+
+         var panoramaOptions = {
+            position: fenway,
+              pov: {
+                heading: heading,
+                pitch: 10,
+                zoom: 1
+              }
+            };
+          
+          tempPanorama = new  google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
+        };
+        
+        
+        var numberOfSteps = 20.0;
+        var i=0;
+        function move(){
+          if(i>numberOfSteps){
+            i = 0;
+          }
+          if(tempPanorama!=null){
+            panorama = tempPanorama;
+          }
+          if(tempMap != null){
+            map = tempMap;
+          }
+          var lng = startPoint.lng() + i*(stopPoint.lng()-startPoint.lng())/numberOfSteps;
+          var lat = startPoint.lat() + i*(stopPoint.lng()-startPoint.lat())/numberOfSteps;
+  
+          var movePoint =  new google.maps.LatLng(49.9158, 15.818+0.0001*i);
+          myOptions = {
+              center: movePoint,
+              zoom: 15,
+              mapTypeId: google.maps.MapTypeId.ROADMAP
+          };
+          tempMap = new google.maps.Map(document.getElementById("map_canvas"),
+              myOptions);
+          var panoramaOptions = {
+              position: movePoint,
+                pov: {
+                  heading: heading,
+                  pitch: 10,
+                  zoom: 1
+                }
+          };
+            
+          tempPanorama = new  google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
+          i = i+1;
+        }
+       
+       function autoRotate(){
+          rotateTimeout = setInterval(function(){rotateHeading()},3000);
+       }
+       
+       function startMoving(){
+          movingTimeout = setInterval(function(){move()},1000);
+       }
+       
+       function stopRotation(){
+          clearTimeout(rotateTimeout);
+       }
+      
+
+    </script>
+  </head>
+  <body onload="initialize()">
+    <button onclick="rotateHeading()">Rotate</button>
+    <button onclick="autoRotate()">Auto Rotate</button>
+    <button onclick="stopRotation()">Stop Rotate</button>
+    <button onclick="move()">Move</button>
+    <button onclick="startMoving()">Start moving</button>
+    <div id="map_canvas" style="width:50%; height:50%"></div>
+    <div id="pano" style="width:50%; height:50%"></div>
+  </body>
+</html>

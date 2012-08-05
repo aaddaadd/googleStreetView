@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map_canvas { height: 100% }
+    </style>
+    <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBtiszutk7wJLxrl9fKNSgpE5UT3C9X4f8&sensor=false">
+    </script>
+    <script type="text/javascript">
+      var heading =300;
+      var rotateTimeout;
+      function initialize() {
+                        
+        rotateHeading();
+       }
+       
+       function test(){
+       
+       }
+
+  
+       
+       function rotateHeading(){
+          heading = heading + 10;
+          if(heading>360){
+            heading = 0;
+          }
+          var fenway = new google.maps.LatLng(49.9155, 15.819166); 
+          var myOptions = {
+            center: fenway,
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          };
+          var map = new google.maps.Map(document.getElementById("map_canvas"),
+              myOptions);
+          var panoramaOptions = {
+            position: fenway,
+            pov: {
+              heading: heading,
+              pitch: 10,
+              zoom: 1
+            }
+          };
+          var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
+          map.setStreetView(panorama);
+        };
+       
+       function autoRotate(){
+          rotateTimeout = setInterval(function(){rotateHeading()},3000);
+       }
+       
+       function stopRotation(){
+          clearTimeout(rotateTimeout);
+       }
+      
+
+    </script>
+  </head>
+  <body onload="initialize()">
+    <button onclick="rotateHeading()">Rotate</button>
+    <button onclick="autoRotate()">Auto Rotate</button>
+    <button onclick="stopRotate()">Stop Rotate</button>
+    <div id="map_canvas" style="width:50%; height:50%"></div>
+    <div id="pano" style="width:50%; height:50%"></div>
+  </body>
+</html>
